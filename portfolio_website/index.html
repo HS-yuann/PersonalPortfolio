@@ -3,354 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yuan Hai Shu | Data & Software Engineer</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Yuan Hai Shu | Data Pipeline Architect</title>
+    <link rel="stylesheet" href="styles-new.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <a href="#" class="logo">
-                    <span class="logo-text">&lt;/&gt; Portfolio</span>
-                </a>
-                <ul class="nav-menu">
-                    <li><a href="#home" class="nav-link">Home</a></li>
-                    <li><a href="#about" class="nav-link">About</a></li>
-                    <li><a href="#skills" class="nav-link">Skills</a></li>
-                    <li><a href="#projects" class="nav-link">Projects</a></li>
-                    <li><a href="#experience" class="nav-link">Experience</a></li>
-                    <li><a href="#contact" class="nav-link">Contact</a></li>
-                </ul>
-                <button class="theme-toggle" id="themeToggle">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <div class="hamburger" id="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+    <!-- Home Page - Introduction -->
+    <section id="home-intro" class="home-intro active">
+        <div class="intro-container">
+            <div class="intro-content">
+                <div class="intro-left">
+                    <div class="profile-image">
+                        <img src="profile_pic.jpg" alt="Yuan Hai Shu">
+                        <div class="profile-glow"></div>
+                    </div>
+                </div>
+                <div class="intro-right">
+                    <h1 class="intro-name">Yuan Hai Shu</h1>
+                    <h2 class="intro-title">Data Engineer</h2>
+                    <p class="intro-description">
+                        Data engineer with 4 years of combined full-time and internship experience, specializing in designing, building, and operating scalable data pipelines and data platforms. Experienced in data modeling, database optimization, and productionizing data for analytics and ML workloads. Currently driving data infrastructure transformation at Patsnap.
+                    </p>
+                    <div class="intro-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">4</span>
+                            <span class="stat-label">Years Experience</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5</span>
+                            <span class="stat-label">Companies</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">15+</span>
+                            <span class="stat-label">Technologies</span>
+                        </div>
+                    </div>
+                    <button class="explore-btn" onclick="document.getElementById('home-intro').classList.remove('active')">
+                        Explore My Work
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Interactive World Canvas -->
+    <canvas id="worldCanvas"></canvas>
+
+    <!-- Navigation Compass -->
+    <nav class="compass-nav">
+        <div class="compass">
+            <button class="compass-btn" data-world="city" title="Project City">
+                <i class="fas fa-city"></i>
+                <span>Projects</span>
+            </button>
+            <button class="compass-btn" data-world="desk" title="Skills Desk">
+                <i class="fas fa-laptop-code"></i>
+                <span>Skills</span>
+            </button>
+            <button class="compass-btn" data-world="timeline" title="Journey Timeline">
+                <i class="fas fa-road"></i>
+                <span>Journey</span>
+            </button>
+            <button class="compass-btn" data-world="contact" title="Connect">
+                <i class="fas fa-rocket"></i>
+                <span>Connect</span>
+            </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="hero-title">
-                        <span class="greeting">Hi, I'm</span>
-                        <span class="name">Yuan Hai Shu</span>
-                    </h1>
-                    <h2 class="hero-subtitle">
-                        <span class="typed-text"></span>
-                        <span class="cursor">&nbsp;</span>
-                    </h2>
-                    <p class="hero-description">
-                        I build scalable data pipelines, optimize database architectures, and leverage ML/NLP to solve complex business problems.
-                        Chemical Engineering graduate from NUS with hands-on experience in data engineering, machine learning, and backend development.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="#projects" class="btn btn-primary">View My Work</a>
-                        <a href="#contact" class="btn btn-secondary">Get In Touch</a>
-                    </div>
-                    <div class="social-links">
-                        <a href="https://github.com/yuanhaishuyhs" target="_blank" class="social-link">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://linkedin.com/in/yuan-hai-shu" target="_blank" class="social-link">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="mailto:haishuyuan@yahoo.com.sg" class="social-link">
-                            <i class="fas fa-envelope"></i>
-                        </a>
-                        <a href="tel:+6585427025" class="social-link">
-                            <i class="fas fa-phone"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <div class="image-container">
-                        <div class="code-block">
-                            <div class="code-header">
-                                <span class="dot red"></span>
-                                <span class="dot yellow"></span>
-                                <span class="dot green"></span>
-                            </div>
-                            <pre><code><span class="keyword">class</span> <span class="class-name">DataEngineer</span>:
-    <span class="keyword">def</span> <span class="function">__init__</span>(self):
-        self.skills = [
-            <span class="string">"Python"</span>,
-            <span class="string">"SQL"</span>,
-            <span class="string">"Spark"</span>,
-            <span class="string">"AWS"</span>
-        ]
+    <!-- World: Project City -->
+    <section id="city" class="world-section active">
+        <div class="world-container">
+            <h2 class="world-title">PROJECT METROPOLIS</h2>
+            <p class="world-subtitle">Each building is a project. Click to explore.</p>
 
-    <span class="keyword">def</span> <span class="function">build_pipeline</span>(self):
-        <span class="keyword">return</span> <span class="string">"Scalable & Efficient"</span></code></pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <span></span>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-image">
-                    <div class="image-wrapper">
-                        <img src="profile_pic.jpg" alt="Profile Picture">
-                        <div class="image-border"></div>
-                    </div>
-                </div>
-                <div class="about-text">
-                    <h3>Data & Backend Engineer</h3>
-                    <p>
-                        I'm a passionate engineer with a strong foundation in Chemical Engineering from the National University of Singapore (NUS).
-                        My expertise lies in building scalable data pipelines, optimizing database architectures, and implementing machine learning solutions
-                        to solve real-world business challenges.
-                    </p>
-                    <p>
-                        From redesigning legacy databases at Patsnap to fine-tuning ML models at Silent Eight and automating verification systems at GlobalFoundries,
-                        I've consistently delivered impactful solutions. I'm driven by the challenge of turning complex data into actionable insights and building
-                        systems that scale efficiently. Champion of CDL GCNS Young SDG Leaders award 2022 and Samsung Solve for Tomorrow 2021.
-                    </p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <h4>4</h4>
-                            <p>Years Experience</p>
-                        </div>
-                        <div class="stat">
-                            <h4>5</h4>
-                            <p>Companies</p>
-                        </div>
-                        <div class="stat">
-                            <h4>15+</h4>
-                            <p>Technologies</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="skills">
-        <div class="container">
-            <h2 class="section-title">Skills & Technologies</h2>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <div class="category-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Programming Languages</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">SQL</span>
-                        <span class="skill-tag">Java</span>
-                        <span class="skill-tag">Spark</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <div class="category-icon">
+            <div class="city-skyline">
+                <!-- Building 1 -->
+                <div class="building" data-project="patsnap" style="--height: 350px; --color: #00d4ff;">
+                    <div class="building-floors"></div>
+                    <div class="building-roof">
                         <i class="fas fa-database"></i>
                     </div>
-                    <h3>Data Engineering</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Apache Spark</span>
-                        <span class="skill-tag">Kafka</span>
-                        <span class="skill-tag">Flink</span>
-                        <span class="skill-tag">ETL Pipelines</span>
-                        <span class="skill-tag">Data Processing</span>
-                        <span class="skill-tag">Web Scraping</span>
-                    </div>
+                    <div class="building-label">Patsnap DB Redesign</div>
                 </div>
-                <div class="skill-category">
-                    <div class="category-icon">
+
+                <!-- Building 2 -->
+                <div class="building" data-project="llm" style="--height: 320px; --color: #b84fff;">
+                    <div class="building-floors"></div>
+                    <div class="building-roof">
                         <i class="fas fa-brain"></i>
                     </div>
-                    <h3>Machine Learning & AI</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">TensorFlow</span>
-                        <span class="skill-tag">PyTorch</span>
-                        <span class="skill-tag">LLMs</span>
-                        <span class="skill-tag">NLP</span>
-                        <span class="skill-tag">ML Model Fine-tuning</span>
-                    </div>
+                    <div class="building-label">LLM ML Agent</div>
                 </div>
-                <div class="skill-category">
-                    <div class="category-icon">
-                        <i class="fas fa-cloud"></i>
+
+                <!-- Building 3 -->
+                <div class="building" data-project="semiconductor" style="--height: 280px; --color: #00ff41;">
+                    <div class="building-floors"></div>
+                    <div class="building-roof">
+                        <i class="fas fa-microchip"></i>
                     </div>
-                    <h3>Cloud & Storage</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">AWS</span>
-                        <span class="skill-tag">Tencent Cloud</span>
-                        <span class="skill-tag">Cloud Architecture</span>
-                        <span class="skill-tag">Scalable Systems</span>
-                    </div>
+                    <div class="building-label">Semiconductor Dashboard</div>
                 </div>
-                <div class="skill-category">
-                    <div class="category-icon">
-                        <i class="fas fa-layer-group"></i>
+
+                <!-- Building 4 -->
+                <div class="building" data-project="etl" style="--height: 300px; --color: #f5a623;">
+                    <div class="building-floors"></div>
+                    <div class="building-roof">
+                        <i class="fas fa-stream"></i>
                     </div>
-                    <h3>Databases</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">PostgreSQL</span>
-                        <span class="skill-tag">MySQL</span>
-                        <span class="skill-tag">Trino</span>
-                        <span class="skill-tag">TiDB</span>
-                        <span class="skill-tag">Database Design</span>
-                        <span class="skill-tag">Query Optimization</span>
-                    </div>
+                    <div class="building-label">ETL Pipeline</div>
                 </div>
-                <div class="skill-category">
-                    <div class="category-icon">
-                        <i class="fas fa-laptop-code"></i>
+
+                <!-- Building 5 -->
+                <div class="building" data-project="nlp" style="--height: 260px; --color: #ff6b6b;">
+                    <div class="building-floors"></div>
+                    <div class="building-roof">
+                        <i class="fas fa-language"></i>
                     </div>
-                    <h3>Tools & Visualization</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Tableau</span>
-                        <span class="skill-tag">Microsoft BI</span>
-                        <span class="skill-tag">Qlikview</span>
-                        <span class="skill-tag">API Development</span>
-                        <span class="skill-tag">Data Validation</span>
+                    <div class="building-label">NLP Extraction</div>
+                </div>
+
+                <!-- Building 6 -->
+                <div class="building" data-project="tableau" style="--height: 290px; --color: #17c964;">
+                    <div class="building-floors"></div>
+                    <div class="building-roof">
+                        <i class="fas fa-chart-line"></i>
                     </div>
+                    <div class="building-label">Tableau Dashboards</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <div class="container">
-            <h2 class="section-title">Featured Projects</h2>
-            <div class="project-filters">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="data">Data Engineering</button>
-                <button class="filter-btn" data-filter="ml">Machine Learning</button>
-                <button class="filter-btn" data-filter="web">Web Development</button>
+    <!-- World: Skills Desk -->
+    <section id="desk" class="world-section">
+        <div class="world-container">
+            <h2 class="world-title">SKILLS & EXPERTISE</h2>
+            <p class="world-subtitle">Click each category to explore my technical skills.</p>
+
+            <div class="desk-view">
+                <!-- Programming -->
+                <div class="desk-item" data-skill="programming">
+                    <i class="fas fa-laptop-code"></i>
+                    <div class="item-label">Programming</div>
+                </div>
+
+                <!-- Data Engineering -->
+                <div class="desk-item" data-skill="data-eng">
+                    <i class="fas fa-database"></i>
+                    <div class="item-label">Data Engineering</div>
+                </div>
+
+                <!-- ML/AI -->
+                <div class="desk-item" data-skill="ml">
+                    <i class="fas fa-brain"></i>
+                    <div class="item-label">ML & AI</div>
+                </div>
+
+                <!-- Cloud -->
+                <div class="desk-item" data-skill="cloud">
+                    <i class="fas fa-cloud"></i>
+                    <div class="item-label">Cloud</div>
+                </div>
+
+                <!-- Databases -->
+                <div class="desk-item" data-skill="databases">
+                    <i class="fas fa-server"></i>
+                    <div class="item-label">Databases</div>
+                </div>
+
+                <!-- Tools -->
+                <div class="desk-item" data-skill="tools">
+                    <i class="fas fa-tools"></i>
+                    <div class="item-label">Tools & Viz</div>
+                </div>
             </div>
-            <div class="projects-grid">
-                <div class="project-card" data-category="data">
-                    <div class="project-image">
-                        <img src="https://via.placeholder.com/600x400" alt="Project 1">
-                        <div class="project-overlay">
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
-                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
+        </div>
+    </section>
+
+    <!-- World: Journey Timeline -->
+    <section id="timeline" class="world-section">
+        <div class="world-container">
+            <h2 class="world-title">THE JOURNEY</h2>
+            <p class="world-subtitle">Scroll horizontally through my career path.</p>
+
+            <div class="journey-path">
+                <div class="journey-scroll">
+                    <!-- Milestone 1 -->
+                    <div class="milestone">
+                        <div class="milestone-marker"></div>
+                        <div class="milestone-content">
+                            <div class="milestone-date">2025 - Present</div>
+                            <h3>Patsnap</h3>
+                            <p class="role">Data/Backend Engineer</p>
+                            <ul>
+                                <li>Database redesign & optimization</li>
+                                <li>Incremental processing pipelines</li>
+                                <li>Domain-based data validation</li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="project-content">
-                        <h3>Database Redesign for Patsnap Eureka</h3>
-                        <p>Redesigned legacy database architecture, implementing incremental processing with traceable fingerprints achieving faster searches and 5% storage reduction.</p>
-                        <div class="project-tags">
-                            <span>Database Design</span>
-                            <span>ETL</span>
-                            <span>Optimization</span>
-                            <span>Python</span>
+
+                    <!-- Milestone 2 -->
+                    <div class="milestone">
+                        <div class="milestone-marker"></div>
+                        <div class="milestone-content">
+                            <div class="milestone-date">2024 - 2025</div>
+                            <h3>Silent Eight</h3>
+                            <p class="role">Data Scientist</p>
+                            <ul>
+                                <li>LLM integration (10% efficiency boost)</li>
+                                <li>TensorFlow model fine-tuning</li>
+                                <li>ETL pipeline development</li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-                <div class="project-card" data-category="ml">
-                    <div class="project-image">
-                        <img src="https://via.placeholder.com/600x400" alt="Project 2">
-                        <div class="project-overlay">
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
-                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
+
+                    <!-- Milestone 3 -->
+                    <div class="milestone">
+                        <div class="milestone-marker"></div>
+                        <div class="milestone-content">
+                            <div class="milestone-date">2023</div>
+                            <h3>GlobalFoundries</h3>
+                            <p class="role">DTE Modelling Intern</p>
+                            <ul>
+                                <li>Automated wafer verification</li>
+                                <li>ML model development</li>
+                                <li>Microsoft BI integration</li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="project-content">
-                        <h3>LLM-Enhanced ML Agent</h3>
-                        <p>Improved in-house machine learning agent by incorporating LLMs, achieving 10% efficiency increase and 12% reduction in false negatives for financial compliance.</p>
-                        <div class="project-tags">
-                            <span>LLMs</span>
-                            <span>TensorFlow</span>
-                            <span>NLP</span>
-                            <span>Python</span>
+
+                    <!-- Milestone 4 -->
+                    <div class="milestone">
+                        <div class="milestone-marker"></div>
+                        <div class="milestone-content">
+                            <div class="milestone-date">2022</div>
+                            <h3>Panasonic</h3>
+                            <p class="role">Technology Analyst</p>
+                            <ul>
+                                <li>Excel to Tableau migration</li>
+                                <li>Dashboard development</li>
+                                <li>30% efficiency improvement</li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-                <div class="project-card" data-category="web">
-                    <div class="project-image">
-                        <img src="https://via.placeholder.com/600x400" alt="Project 3">
-                        <div class="project-overlay">
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
-                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3>Semiconductor Testing Dashboard</h3>
-                        <p>Linked automated verification system to Microsoft BI dashboard with color-coded severity indicators, reducing verification time from a week to 2 days.</p>
-                        <div class="project-tags">
-                            <span>Microsoft BI</span>
-                            <span>Python</span>
-                            <span>Data Visualization</span>
-                            <span>ML</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card" data-category="data">
-                    <div class="project-image">
-                        <img src="https://via.placeholder.com/600x400" alt="Project 4">
-                        <div class="project-overlay">
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
-                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3>ETL Pipeline for Financial Services</h3>
-                        <p>Implemented ETL pipeline in Python and Spark, developing API payloads to in-house services for client bank compliance systems.</p>
-                        <div class="project-tags">
-                            <span>Spark</span>
-                            <span>Python</span>
-                            <span>ETL</span>
-                            <span>API Development</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card" data-category="ml">
-                    <div class="project-image">
-                        <img src="https://via.placeholder.com/600x400" alt="Project 5">
-                        <div class="project-overlay">
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
-                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3>NLP Entity Extraction System</h3>
-                        <p>Used NLP algorithms to extract key entities and relationships from client data, improving solve rates in financial compliance alerts.</p>
-                        <div class="project-tags">
-                            <span>NLP</span>
-                            <span>Python</span>
-                            <span>Entity Extraction</span>
-                            <span>TensorFlow</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card" data-category="web">
-                    <div class="project-image">
-                        <img src="https://via.placeholder.com/600x400" alt="Project 6">
-                        <div class="project-overlay">
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
-                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3>Litigation Data Tableau Dashboards</h3>
-                        <p>Built Tableau dashboards showing trends and analysis from litigation data, reducing man-hour requirements by 30% and improving deliverables efficiency.</p>
-                        <div class="project-tags">
-                            <span>Tableau</span>
-                            <span>Data Visualization</span>
-                            <span>Analytics</span>
-                            <span>Business Intelligence</span>
+
+                    <!-- Milestone 5 -->
+                    <div class="milestone">
+                        <div class="milestone-marker"></div>
+                        <div class="milestone-content">
+                            <div class="milestone-date">2021</div>
+                            <h3>STEngineering</h3>
+                            <p class="role">Data Analyst</p>
+                            <ul>
+                                <li>Qlikview dashboards</li>
+                                <li>Predictive ML models</li>
+                                <li>REAMS project</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -358,155 +269,68 @@
         </div>
     </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="experience">
-        <div class="container">
-            <h2 class="section-title">Work Experience</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">June 2025 - Present</div>
-                        <h3>Data Engineer / Backend Engineer</h3>
-                        <h4>Patsnap</h4>
-                        <p>Building and optimizing scalable data infrastructure for Patsnap Eureka platform.</p>
-                        <ul>
-                            <li>Redesigned and refactored legacy database achieving faster searches and 5% lower storage costs</li>
-                            <li>Implemented incremental processing with traceable fingerprints for 100% of the data pipeline</li>
-                            <li>Implemented domain-based rules processing across full dataset for data validation</li>
-                            <li>Web crawled public websites to increase and improve the database (less than 1% of database)</li>
-                        </ul>
-                    </div>
+    <!-- World: Contact/Connect -->
+    <section id="contact" class="world-section">
+        <div class="world-container">
+            <h2 class="world-title">LET'S CONNECT</h2>
+            <p class="world-subtitle">Reach out via email, phone, or LinkedIn.</p>
+
+            <div class="launch-pad">
+                <div class="contact-grid">
+                    <a href="mailto:haishuyuan@yahoo.com.sg" class="contact-action">
+                        <i class="fas fa-envelope"></i>
+                        <span class="contact-label">Email</span>
+                        <span class="contact-value">haishuyuan@yahoo.com.sg</span>
+                    </a>
+
+                    <a href="tel:+6585427025" class="contact-action">
+                        <i class="fas fa-phone"></i>
+                        <span class="contact-label">Phone</span>
+                        <span class="contact-value">+65 8542 7025</span>
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/yuan-hai-shu/" target="_blank" class="contact-action">
+                        <i class="fab fa-linkedin"></i>
+                        <span class="contact-label">LinkedIn</span>
+                        <span class="contact-value">yuan-hai-shu</span>
+                    </a>
+
+                    <a href="https://github.com/HS-yuann" target="_blank" class="contact-action">
+                        <i class="fab fa-github"></i>
+                        <span class="contact-label">GitHub</span>
+                        <span class="contact-value">HS-yuann</span>
+                    </a>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">March 2024 - June 2025</div>
-                        <h3>Data Scientist</h3>
-                        <h4>Silent Eight</h4>
-                        <p>Leveraged ML and NLP to improve alert resolution systems for financial compliance.</p>
-                        <ul>
-                            <li>Fine-tuned ML models using TensorFlow to improve solve rate by 5% of alerts raised by clients</li>
-                            <li>Improved in-house ML agent by incorporating LLMs, increasing efficiency by 10% and decreasing false negative rate by 12%</li>
-                            <li>Implemented ETL pipeline in Python and Spark, developing API payload to in-house services for client bank</li>
-                            <li>Used NLP algorithms to extract key entities and relationships from client data to improve solve rates</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">June 2023 - Dec 2023</div>
-                        <h3>DTE Modelling Intern</h3>
-                        <h4>GlobalFoundries</h4>
-                        <p>Automated wafer verification and developed ML models for semiconductor testing.</p>
-                        <ul>
-                            <li>Automated verification of wafer machine results and bad die identification, reducing time from a week to 2 days</li>
-                            <li>Trained and developed models to identify test types, device types, and discrepancy severity using past collected data</li>
-                            <li>Linked to Microsoft BI dashboard with color-coded severity indicators for wafer/die retesting needs</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">May 2022 - Aug 2022</div>
-                        <h3>Technology Analyst Intern</h3>
-                        <h4>Panasonic</h4>
-                        <p>Transformed data visualization workflows and improved client deliverables efficiency.</p>
-                        <ul>
-                            <li>Spearheaded the change from Excel to Tableau for data visualization</li>
-                            <li>Built Tableau dashboards showing trends and analysis from litigation data</li>
-                            <li>Reduced man-hour requirements by 30% and improved client deliverables efficiency</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">May 2021 - Aug 2021</div>
-                        <h3>Data Analyst Intern</h3>
-                        <h4>STEngineering</h4>
-                        <p>Maintained dashboards and trained predictive ML models for service optimization.</p>
-                        <ul>
-                            <li>Embarked on REAMS Project, maintained and updated various Qlikview dashboards for visualization</li>
-                            <li>Trained machine learning models to predict breakdowns and delays in services</li>
-                        </ul>
-                    </div>
+
+                <div class="location-tag">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Singapore</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h3>Let's Work Together</h3>
-                    <p>I'm always interested in hearing about new projects and opportunities. Whether you have a question or just want to say hi, feel free to reach out!</p>
-                    <div class="contact-methods">
-                        <div class="contact-method">
-                            <i class="fas fa-envelope"></i>
-                            <div>
-                                <h4>Email</h4>
-                                <a href="mailto:haishuyuan@yahoo.com.sg">haishuyuan@yahoo.com.sg</a>
-                            </div>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fas fa-phone"></i>
-                            <div>
-                                <h4>Phone</h4>
-                                <a href="tel:+6585427025">+65 8542 7025</a>
-                            </div>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div>
-                                <h4>Location</h4>
-                                <p>Singapore</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" required>
-                        <label for="name">Your Name</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" required>
-                        <label for="email">Your Email</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="subject" name="subject" required>
-                        <label for="subject">Subject</label>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" name="message" rows="5" required></textarea>
-                        <label for="message">Message</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
+    <!-- Project Modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <!-- Content injected by JS -->
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2025 Yuan Hai Shu. All rights reserved.</p>
-                <div class="footer-links">
-                    <a href="https://github.com/yuanhaishuyhs" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="https://linkedin.com/in/yuan-hai-shu" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="mailto:haishuyuan@yahoo.com.sg"><i class="fas fa-envelope"></i></a>
-                </div>
-            </div>
+    <!-- Skill Panel -->
+    <div id="skillPanel" class="panel">
+        <button class="panel-close">&times;</button>
+        <div class="panel-content">
+            <!-- Content injected by JS -->
         </div>
-    </footer>
+    </div>
 
-    <script src="script.js"></script>
+    <!-- Cursor Follower -->
+    <div class="cursor-glow"></div>
+
+    <script src="script-new.js"></script>
 </body>
 </html>
