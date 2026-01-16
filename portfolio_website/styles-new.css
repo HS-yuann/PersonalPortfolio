@@ -949,11 +949,27 @@ body.world-active .identity-morph {
     /* Make world sections scrollable */
     .world-section {
         overflow-y: auto;
-        padding: 100px 0 120px;
+        padding: 80px 0 120px;
+        align-items: flex-start;
     }
 
     .world-container {
         padding: 1rem;
+    }
+
+    /* Skills section scrollable */
+    .desk-view {
+        max-height: none;
+    }
+
+    /* Contact section scrollable */
+    .launch-pad {
+        gap: 2rem;
+    }
+
+    .contact-grid {
+        width: 100%;
+        max-width: 400px;
     }
 
     .city-skyline {
@@ -1123,18 +1139,36 @@ body.world-active .identity-morph {
     .world-section {
         height: auto;
         min-height: 100vh;
-        padding: 80px 0 100px;
+        padding: 60px 0 100px;
         align-items: flex-start;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .world-container {
         padding: 0.75rem;
+        width: 100%;
     }
 
+    /* Skills section - scrollable on mobile */
     .desk-view {
         grid-template-columns: repeat(2, 1fr);
-        max-width: 350px;
+        max-width: 320px;
         gap: 0.75rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Contact section - scrollable on mobile */
+    .launch-pad {
+        gap: 1.5rem;
+        padding-bottom: 2rem;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+        width: 100%;
+        max-width: 300px;
+        gap: 1rem;
     }
 
     .desk-item {
