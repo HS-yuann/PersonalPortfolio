@@ -969,6 +969,25 @@ body.world-active .identity-morph {
     .world-subtitle {
         font-size: 1rem;
     }
+
+    .construction-zone {
+        min-height: 250px;
+        padding: 2rem;
+        max-width: 450px;
+    }
+
+    .crane-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .construction-text {
+        font-size: 1.3rem;
+    }
+
+    .construction-subtext {
+        font-size: 0.9rem;
+    }
 }
 
 /* Mobile Phones */
@@ -1065,5 +1084,25 @@ body.world-active .identity-morph {
 
     .contact-value {
         font-size: 0.95rem;
+    }
+
+    .construction-zone {
+        min-height: 200px;
+        padding: 1.5rem;
+        max-width: 300px;
+        border-radius: 15px;
+    }
+
+    .crane-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .construction-text {
+        font-size: 1.1rem;
+    }
+
+    .construction-subtext {
+        font-size: 0.8rem;
     }
 }
