@@ -885,6 +885,28 @@ body.world-active .identity-morph {
 
 /* Tablets */
 @media (max-width: 768px) {
+    /* Enable normal cursor and touch scrolling on tablet/mobile */
+    body {
+        cursor: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .cursor-glow {
+        display: none;
+    }
+
+    /* Make home intro scrollable on tablet/mobile */
+    .home-intro {
+        position: fixed;
+        overflow-y: auto;
+        padding: 2rem 0;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .intro-container {
+        padding: 1.5rem;
+    }
+
     .intro-content {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -893,6 +915,12 @@ body.world-active .identity-morph {
 
     .intro-right {
         text-align: center;
+    }
+
+    .intro-description {
+        font-size: 1rem;
+        line-height: 1.7;
+        margin-bottom: 2rem;
     }
 
     .profile-image {
@@ -906,6 +934,7 @@ body.world-active .identity-morph {
 
     .intro-title {
         font-size: 1.8rem;
+        margin-bottom: 1.5rem;
     }
 
     .intro-stats {
@@ -915,6 +944,16 @@ body.world-active .identity-morph {
 
     .stat-item {
         align-items: center;
+    }
+
+    /* Make world sections scrollable */
+    .world-section {
+        overflow-y: auto;
+        padding: 100px 0 120px;
+    }
+
+    .world-container {
+        padding: 1rem;
     }
 
     .city-skyline {
@@ -1014,29 +1053,82 @@ body.world-active .identity-morph {
         gap: 2rem;
         padding: 1.5rem;
     }
+
+    /* Modal & Panel - Tablet */
+    .modal-content, .panel-content {
+        padding: 2rem;
+        margin: 1rem;
+        max-width: calc(100% - 2rem);
+        max-height: 85vh;
+    }
 }
 
 /* Mobile Phones */
 @media (max-width: 480px) {
+    /* Better mobile scrolling for home */
+    .home-intro {
+        height: auto;
+        min-height: 100vh;
+        padding: 1.5rem 0 2rem;
+        align-items: flex-start;
+    }
+
+    .intro-container {
+        padding: 1rem;
+    }
+
+    .intro-content {
+        gap: 1.5rem;
+    }
+
     .intro-name {
         font-size: 2rem;
     }
 
     .intro-title {
         font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+
+    .intro-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
     }
 
     .profile-image {
-        width: 200px;
-        height: 200px;
+        width: 180px;
+        height: 180px;
     }
 
     .stat-number {
         font-size: 2rem;
     }
 
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
     .intro-stats {
-        gap: 1.5rem;
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+    }
+
+    .explore-btn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+
+    /* Better mobile scrolling for world sections */
+    .world-section {
+        height: auto;
+        min-height: 100vh;
+        padding: 80px 0 100px;
+        align-items: flex-start;
+    }
+
+    .world-container {
+        padding: 0.75rem;
     }
 
     .desk-view {
@@ -1169,5 +1261,22 @@ body.world-active .identity-morph {
 
     .journey-scroll::before {
         height: 3px;
+    }
+
+    /* Modal & Panel - Mobile */
+    .modal-content, .panel-content {
+        padding: 1.5rem;
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+        max-height: 90vh;
+        border-radius: 15px;
+    }
+
+    .modal-close, .panel-close {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+        top: 0.75rem;
+        right: 0.75rem;
     }
 }
