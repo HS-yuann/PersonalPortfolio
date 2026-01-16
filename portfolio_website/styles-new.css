@@ -988,6 +988,32 @@ body.world-active .identity-morph {
     .construction-subtext {
         font-size: 0.9rem;
     }
+
+    /* Journey Timeline - Tablet */
+    .milestone {
+        min-width: 280px;
+    }
+
+    .milestone-content {
+        padding: 1.5rem;
+    }
+
+    .milestone-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .role {
+        font-size: 1rem;
+    }
+
+    .milestone-content li {
+        font-size: 0.9rem;
+    }
+
+    .journey-scroll {
+        gap: 2rem;
+        padding: 1.5rem;
+    }
 }
 
 /* Mobile Phones */
@@ -1104,5 +1130,44 @@ body.world-active .identity-morph {
 
     .construction-subtext {
         font-size: 0.8rem;
+    }
+
+    /* Journey Timeline - Mobile */
+    .milestone {
+        min-width: 240px;
+    }
+
+    .milestone-marker {
+        width: 30px;
+        height: 30px;
+    }
+
+    .milestone-content {
+        padding: 1.25rem;
+    }
+
+    .milestone-content h3 {
+        font-size: 1.3rem;
+    }
+
+    .milestone-date {
+        font-size: 0.8rem;
+    }
+
+    .role {
+        font-size: 0.9rem;
+    }
+
+    .milestone-content li {
+        font-size: 0.85rem;
+    }
+
+    .journey-scroll {
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+
+    .journey-scroll::before {
+        height: 3px;
     }
 }
