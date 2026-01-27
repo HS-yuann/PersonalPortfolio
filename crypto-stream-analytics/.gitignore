@@ -1,0 +1,78 @@
+# Virtual Environment
+venv/
+venv*/
+.venv/
+env/
+include/
+Lib/
+Scripts/
+pyvenv.cfg
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data & Databases
+*.db
+*.sqlite
+data/
+!data/.gitkeep
+
+# Delta Lake
+*.parquet
+*.delta/
+_delta_log/
+
+# Spark
+checkpoints/
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Airflow
+airflow/logs/
+airflow.db
+airflow-webserver.pid
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+
+# Logs
+*.log
+logs/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Misc
+nul
+*.bak
+*.tmp

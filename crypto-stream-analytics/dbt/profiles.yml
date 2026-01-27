@@ -1,0 +1,15 @@
+# dbt Profile Configuration
+# Using DuckDB for local development and analytics
+
+crypto_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: '../data/analytics.duckdb'
+      threads: 4
+
+    prod:
+      type: duckdb
+      path: '../data/analytics.duckdb'
+      threads: 8

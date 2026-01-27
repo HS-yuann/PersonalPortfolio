@@ -1,0 +1,46 @@
+# dbt Project Configuration
+# Real-Time Financial Market Data Platform
+
+name: 'crypto_analytics'
+version: '1.0.0'
+config-version: 2
+
+profile: 'crypto_analytics'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Model configurations
+models:
+  crypto_analytics:
+    # Staging models (from Bronze layer)
+    staging:
+      +materialized: view
+      +schema: staging
+
+    # Marts (business-level aggregations for Gold layer)
+    marts:
+      +materialized: table
+      +schema: marts
+
+# Variables
+vars:
+  # Symbols to track
+  tracked_symbols: ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']
+
+  # Quality thresholds
+  max_price_change_pct: 50
+  min_volume_threshold: 1000
+
+  # Time windows
+  ohlc_window_minutes: 1
+  analytics_window_minutes: 15

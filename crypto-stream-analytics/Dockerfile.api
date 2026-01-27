@@ -1,0 +1,32 @@
+# Dockerfile for Crypto Analytics API
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libffi-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install
+COPY requirements.txt .
+RUN pip install --no-cache-dir \
+    fastapi==0.109.0 \
+    uvicorn==0.27.0 \
+    duckdb==0.9.2 \
+    pydantic==2.5.0 \
+    pydantic-settings==2.1.0 \
+    python-dotenv==1.0.0 \
+    structlog==24.1.0 \
+    prometheus-client==0.19.0
+
+# Copy application code
+COPY config /app/config
+COPY src /app/src
+
+# Expose port
+EXPOSE 8000
+
+# Run the API
+CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
