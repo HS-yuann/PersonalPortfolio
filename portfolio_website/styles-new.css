@@ -422,6 +422,146 @@ body.world-active .identity-morph {
     box-shadow: 0 30px 60px rgba(0, 212, 255, 0.5);
 }
 
+/* PROJECT GRID - Building Cards */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.project-building {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(184, 79, 255, 0.08));
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text-light);
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+.project-building:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary-color);
+    box-shadow: 0 20px 60px rgba(0, 212, 255, 0.3);
+}
+
+.building-structure {
+    position: relative;
+    height: 160px;
+    background: linear-gradient(180deg, rgba(0, 212, 255, 0.15), rgba(184, 79, 255, 0.1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.building-structure::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 20px,
+        rgba(255, 255, 255, 0.03) 20px,
+        rgba(255, 255, 255, 0.03) 22px
+    );
+}
+
+.building-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: #fff;
+    box-shadow: 0 10px 40px rgba(0, 212, 255, 0.4);
+    animation: float 3s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+}
+
+.building-lights {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(180deg, transparent, rgba(0, 212, 255, 0.2));
+}
+
+.project-info {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.project-desc {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.project-tech span {
+    padding: 0.3rem 0.75rem;
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    letter-spacing: 0.02em;
+}
+
+.project-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    transition: color 0.3s ease;
+}
+
+.project-link i {
+    font-size: 1.2rem;
+}
+
+.project-building:hover .project-link {
+    color: var(--primary-color);
+}
+
 /* Construction Zone - Building in Progress */
 .construction-zone {
     display: flex;
@@ -957,6 +1097,35 @@ body.world-active .identity-morph {
         padding: 1rem;
     }
 
+    /* Project building - Tablet */
+    .project-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        padding: 0 1rem;
+    }
+
+    .building-structure {
+        height: 140px;
+    }
+
+    .building-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+
+    .project-info {
+        padding: 1.25rem;
+    }
+
+    .project-title {
+        font-size: 1.25rem;
+    }
+
+    .project-desc {
+        font-size: 0.9rem;
+    }
+
     /* Skills section scrollable */
     .desk-view {
         max-height: none;
@@ -1148,6 +1317,58 @@ body.world-active .identity-morph {
     .world-container {
         padding: 0.75rem;
         width: 100%;
+    }
+
+    /* Project building - Mobile */
+    .project-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        padding: 0 0.5rem;
+        gap: 1.5rem;
+    }
+
+    .project-building {
+        border-radius: 15px;
+    }
+
+    .building-structure {
+        height: 120px;
+    }
+
+    .building-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.75rem;
+    }
+
+    .project-info {
+        padding: 1rem;
+    }
+
+    .project-title {
+        font-size: 1.15rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .project-desc {
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin-bottom: 0.75rem;
+    }
+
+    .project-tech {
+        gap: 0.4rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .project-tech span {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    .project-link {
+        font-size: 0.85rem;
+        padding-top: 0.75rem;
     }
 
     /* Skills section - scrollable on mobile */
