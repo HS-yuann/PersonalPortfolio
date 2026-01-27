@@ -158,9 +158,6 @@ with DAG(
     [test_dbt, compact_delta_tables] >> generate_quality_report >> end_batch
 
 
-# ============================================
-# DAG Definition: Data Quality Monitoring
-# ============================================
 
 with DAG(
     dag_id="crypto_data_quality_monitor",

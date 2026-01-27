@@ -1,636 +1,454 @@
-// Shooting Star Cursor (Desktop Only)
-if (window.innerWidth > 640) {
-    let mouseX = 0;
-    let mouseY = 0;
-    let cursorX = 0;
-    let cursorY = 0;
-    const trail = [];
-    const trailLength = 15;
+// =======================
+// LIVING IDENTITY SYSTEM
+// =======================
 
-    // Create trail container
-    const trailContainer = document.createElement('div');
-    trailContainer.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;';
-    document.body.appendChild(trailContainer);
+// Morph identity text every 3 seconds
+const identityElement = document.querySelector('.identity-morph');
+let identities = [];
+let currentIdentityIndex = 0;
 
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+if (identityElement) {
+    identities = JSON.parse(identityElement.dataset.identities);
 
-        // Show cursor on first move
-        if (document.body.style.getPropertyValue('--cursor-opacity') === '0') {
-            document.body.style.setProperty('--cursor-opacity', '1');
-        }
+    function morphIdentity() {
+        currentIdentityIndex = (currentIdentityIndex + 1) % identities.length;
+        identityElement.textContent = identities[currentIdentityIndex];
+    }
 
-        // Add trail point
-        trail.push({ x: mouseX, y: mouseY, time: Date.now() });
+    setInterval(morphIdentity, 3000);
+    identityElement.textContent = identities[0];
+}
 
-        // Limit trail length
-        if (trail.length > trailLength) {
-            trail.shift();
-        }
+// =======================
+// CURSOR-BASED COLOR SHIFT
+// =======================
+
+let mouseX = 0;
+let mouseY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    // Update cursor glow position
+    const cursorGlow = document.querySelector('.cursor-glow');
+    if (cursorGlow) {
+        cursorGlow.style.left = mouseX + 'px';
+        cursorGlow.style.top = mouseY + 'px';
+    }
+
+    // Update cursor position for deep sea lighting effect
+    document.documentElement.style.setProperty('--cursor-x', mouseX + 'px');
+    document.documentElement.style.setProperty('--cursor-y', mouseY + 'px');
+
+    // Calculate color shift based on cursor position
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    const hueShift = (mouseX / windowWidth) * 60; // 0-60 degree shift
+    const accentShift = (mouseY / windowHeight) * 60;
+
+    const primaryHue = 200 + hueShift;
+    const accentHue = 280 + accentShift;
+
+    document.documentElement.style.setProperty('--primary-hue', primaryHue);
+    document.documentElement.style.setProperty('--accent-hue', accentHue);
+});
+
+// =======================
+// WORLD CANVAS ANIMATION
+// =======================
+
+const canvas = document.getElementById('worldCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Particles for background
+const particles = [];
+const particleCount = 100;
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+    }
+
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+
+    draw() {
+        ctx.fillStyle = 'rgba(0, 212, 255, 0.5)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+// Initialize particles
+for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+}
+
+function animateCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(particle => {
+        particle.update();
+        particle.draw();
     });
 
-    function animateCursor() {
-        // Smooth cursor following
-        cursorX += (mouseX - cursorX) * 0.2;
-        cursorY += (mouseY - cursorY) * 0.2;
+    // Draw connections
+    particles.forEach((p1, i) => {
+        particles.slice(i + 1).forEach(p2 => {
+            const dx = p1.x - p2.x;
+            const dy = p1.y - p2.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Update CSS variables for cursor position
-        document.body.style.setProperty('--cursor-x', `${cursorX}px`);
-        document.body.style.setProperty('--cursor-y', `${cursorY}px`);
-
-        // Clear old trail elements
-        trailContainer.innerHTML = '';
-
-        // Draw trail
-        const now = Date.now();
-        trail.forEach((point, index) => {
-            const age = now - point.time;
-            if (age < 500) { // Trail lasts 500ms
-                const star = document.createElement('div');
-                const opacity = 1 - (age / 500);
-                const size = 8 - (index / trail.length) * 6;
-                const blur = 2 + (index / trail.length) * 3;
-
-                star.style.cssText = `
-                    position: absolute;
-                    left: ${point.x}px;
-                    top: ${point.y}px;
-                    width: ${size}px;
-                    height: ${size}px;
-                    background: radial-gradient(circle,
-                        rgba(255, 215, 0, ${opacity}) 0%,
-                        rgba(0, 212, 255, ${opacity * 0.7}) 50%,
-                        rgba(184, 79, 255, ${opacity * 0.5}) 100%);
-                    border-radius: 50%;
-                    transform: translate(-50%, -50%);
-                    filter: blur(${blur}px);
-                    pointer-events: none;
-                    box-shadow: 0 0 ${10 * opacity}px rgba(255, 215, 0, ${opacity});
-                `;
-
-                trailContainer.appendChild(star);
+            if (distance < 100) {
+                ctx.strokeStyle = `rgba(0, 212, 255, ${0.2 * (1 - distance / 100)})`;
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
             }
         });
-
-        requestAnimationFrame(animateCursor);
-    }
-
-    // Start cursor animation
-    requestAnimationFrame(animateCursor);
-
-    // Hide cursor when mouse leaves window
-    document.addEventListener('mouseleave', () => {
-        document.body.style.setProperty('--cursor-opacity', '0');
     });
 
-    // Scale up cursor on interactive elements
-    const addCursorEffects = () => {
-        const clickables = document.querySelectorAll('a, button, .btn, .social-link, .project-link, .filter-btn, input, textarea');
-        clickables.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                document.body.style.setProperty('--cursor-scale', '1.5');
-            });
-            el.addEventListener('mouseleave', () => {
-                document.body.style.setProperty('--cursor-scale', '1');
-            });
-        });
-    };
+    requestAnimationFrame(animateCanvas);
+}
 
-    // Add effects on load and after dynamic content
-    addCursorEffects();
-    setTimeout(addCursorEffects, 1000);
+animateCanvas();
 
-    // Create sparkles on click
-    document.addEventListener('click', (e) => {
-        for (let i = 0; i < 12; i++) {
-            const sparkle = document.createElement('div');
-            const angle = (Math.PI * 2 * i) / 12;
-            const velocity = 2 + Math.random() * 3;
-            const size = 4 + Math.random() * 6;
+// Resize canvas
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
 
-            sparkle.style.cssText = `
-                position: fixed;
-                left: ${e.clientX}px;
-                top: ${e.clientY}px;
-                width: ${size}px;
-                height: ${size}px;
-                background: linear-gradient(135deg, #ffd700, #00d4ff, #b84fff);
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 10002;
-                box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-            `;
+// =======================
+// WORLD NAVIGATION
+// =======================
 
-            document.body.appendChild(sparkle);
+const compassButtons = document.querySelectorAll('.compass-btn');
+const worldSections = document.querySelectorAll('.world-section');
+const identityMorph = document.querySelector('.identity-morph');
 
-            let posX = e.clientX;
-            let posY = e.clientY;
-            let opacity = 1;
-            let vx = Math.cos(angle) * velocity;
-            let vy = Math.sin(angle) * velocity;
+compassButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const targetWorld = btn.dataset.world;
 
-            const animateSparkle = () => {
-                posX += vx;
-                posY += vy;
-                vy += 0.1; // Gravity
-                opacity -= 0.02;
-
-                sparkle.style.left = posX + 'px';
-                sparkle.style.top = posY + 'px';
-                sparkle.style.opacity = opacity;
-                sparkle.style.transform = `scale(${opacity})`;
-
-                if (opacity > 0) {
-                    requestAnimationFrame(animateSparkle);
-                } else {
-                    sparkle.remove();
-                }
-            };
-
-            animateSparkle();
+        // Hide home intro
+        const homeIntro = document.getElementById('home-intro');
+        if (homeIntro) {
+            homeIntro.classList.remove('active');
         }
-    });
-}
 
-// Theme Toggle
-const themeToggle = document.getElementById('themeToggle');
-const html = document.documentElement;
+        // Hide identity morph
+        document.body.classList.add('world-active');
 
-// Check for saved theme preference or default to light mode
-const currentTheme = localStorage.getItem('theme') || 'light';
-html.setAttribute('data-theme', currentTheme);
-updateThemeIcon(currentTheme);
-
-themeToggle.addEventListener('click', () => {
-    const theme = html.getAttribute('data-theme');
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-
-    html.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateThemeIcon(newTheme);
-});
-
-function updateThemeIcon(theme) {
-    const icon = themeToggle.querySelector('i');
-    if (theme === 'dark') {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-    } else {
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
-    }
-}
-
-// Mobile Navigation
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.querySelector('.nav-menu');
-
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
-
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-    });
-});
-
-// Smooth Scrolling
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const offsetTop = target.offsetTop - 70;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// Typing Effect for Hero Section
-const typedTextSpan = document.querySelector('.typed-text');
-const textArray = [
-    'Data Engineer',
-    'Backend Engineer',
-    'Data Scientist',
-    'ML Engineer',
-    'Problem Solver'
-];
-const typingDelay = 100;
-const erasingDelay = 50;
-const newTextDelay = 2000;
-let textArrayIndex = 0;
-let charIndex = 0;
-
-function type() {
-    if (charIndex < textArray[textArrayIndex].length) {
-        typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
-        charIndex++;
-        setTimeout(type, typingDelay);
-    } else {
-        setTimeout(erase, newTextDelay);
-    }
-}
-
-function erase() {
-    if (charIndex > 0) {
-        typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
-        charIndex--;
-        setTimeout(erase, erasingDelay);
-    } else {
-        textArrayIndex++;
-        if (textArrayIndex >= textArray.length) textArrayIndex = 0;
-        setTimeout(type, typingDelay + 1100);
-    }
-}
-
-// Start typing effect when page loads
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(type, newTextDelay + 250);
-});
-
-// Project Filtering
-const filterButtons = document.querySelectorAll('.filter-btn');
-const projectCards = document.querySelectorAll('.project-card');
-
-filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        // Remove active class from all buttons
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        // Add active class to clicked button
-        button.classList.add('active');
-
-        const filterValue = button.getAttribute('data-filter');
-
-        projectCards.forEach(card => {
-            if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                card.classList.remove('hide');
-                card.style.animation = 'fadeInUp 0.5s ease';
+        // Switch worlds
+        worldSections.forEach(section => {
+            if (section.id === targetWorld) {
+                section.classList.add('active');
             } else {
-                card.classList.add('hide');
+                section.classList.remove('active');
             }
         });
+
+        // Highlight active compass button
+        compassButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
     });
 });
 
-// Navbar Background on Scroll
-const navbar = document.querySelector('.navbar');
-let lastScroll = 0;
-
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-
-    if (currentScroll <= 0) {
-        navbar.classList.remove('scroll-up');
-        return;
+// Return to identity on ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        document.body.classList.remove('world-active');
+        worldSections.forEach(section => section.classList.remove('active'));
+        compassButtons.forEach(b => b.classList.remove('active'));
     }
-
-    if (currentScroll > lastScroll && !navbar.classList.contains('scroll-down')) {
-        // Scrolling down
-        navbar.classList.remove('scroll-up');
-        navbar.classList.add('scroll-down');
-    } else if (currentScroll < lastScroll && navbar.classList.contains('scroll-down')) {
-        // Scrolling up
-        navbar.classList.remove('scroll-down');
-        navbar.classList.add('scroll-up');
-    }
-    lastScroll = currentScroll;
 });
 
-// Intersection Observer for Animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+// =======================
+// PROJECT CITY INTERACTIONS
+// =======================
+
+const projectData = {
+    patsnap: {
+        title: 'Patsnap Database Redesign',
+        role: 'Data Engineer / Backend Engineer',
+        tech: ['Python', 'PostgreSQL', 'ETL', 'Database Design'],
+        description: 'Redesigned and refactored legacy database architecture for Patsnap Eureka platform.',
+        achievements: [
+            'Achieved faster searches and 5% lower storage costs',
+            'Implemented incremental processing with traceable fingerprints for 100% of the data pipeline',
+            'Implemented domain-based rules processing across full dataset for data validation',
+            'Web crawled public websites to increase and improve the database'
+        ]
+    },
+    llm: {
+        title: 'LLM-Enhanced ML Agent',
+        role: 'Data Scientist',
+        tech: ['Python', 'TensorFlow', 'LLMs', 'NLP'],
+        description: 'Improved in-house machine learning agent by incorporating Large Language Models for financial compliance.',
+        achievements: [
+            '10% efficiency increase in alert processing',
+            '12% reduction in false negative rate',
+            'Integrated state-of-the-art LLM capabilities',
+            'Fine-tuned models for domain-specific tasks'
+        ]
+    },
+    semiconductor: {
+        title: 'Semiconductor Testing Dashboard',
+        role: 'DTE Modelling Intern',
+        tech: ['Python', 'Microsoft BI', 'ML', 'Data Visualization'],
+        description: 'Automated verification of wafer machine results and developed ML models for semiconductor testing.',
+        achievements: [
+            'Reduced verification time from a week to 2 days',
+            'Trained models to identify test types and discrepancy severity',
+            'Linked to Microsoft BI dashboard with color-coded severity indicators',
+            'Automated bad die identification process'
+        ]
+    },
+    etl: {
+        title: 'ETL Pipeline for Financial Services',
+        role: 'Data Scientist',
+        tech: ['Python', 'Apache Spark', 'ETL', 'API Development'],
+        description: 'Implemented ETL pipeline for client bank compliance systems.',
+        achievements: [
+            'Built scalable data pipeline in Python and Spark',
+            'Developed API payloads to in-house services',
+            'Processed large volumes of financial data',
+            'Ensured data quality and compliance standards'
+        ]
+    },
+    nlp: {
+        title: 'NLP Entity Extraction System',
+        role: 'Data Scientist',
+        tech: ['Python', 'NLP', 'TensorFlow', 'Entity Recognition'],
+        description: 'Used NLP algorithms to extract key entities and relationships from client data.',
+        achievements: [
+            'Improved solve rates in financial compliance alerts',
+            'Extracted entities and relationships automatically',
+            'Reduced manual data processing time',
+            'Enhanced data quality for downstream systems'
+        ]
+    },
+    tableau: {
+        title: 'Litigation Data Tableau Dashboards',
+        role: 'Technology Analyst Intern',
+        tech: ['Tableau', 'Data Visualization', 'Analytics', 'Business Intelligence'],
+        description: 'Built Tableau dashboards showing trends and analysis from litigation data.',
+        achievements: [
+            'Spearheaded change from Excel to Tableau',
+            'Reduced man-hour requirements by 30%',
+            'Improved client deliverables efficiency',
+            'Created interactive trend analysis dashboards'
+        ]
+    }
 };
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('fade-in');
-            observer.unobserve(entry.target);
-        }
+const buildings = document.querySelectorAll('.building');
+const modal = document.getElementById('projectModal');
+const modalBody = modal.querySelector('.modal-body');
+const modalClose = modal.querySelector('.modal-close');
+
+buildings.forEach(building => {
+    building.addEventListener('click', () => {
+        const projectKey = building.dataset.project;
+        const project = projectData[projectKey];
+
+        modalBody.innerHTML = `
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">${project.title}</h2>
+            <p style="color: var(--text-dim); font-size: 1.2rem; margin-bottom: 2rem;">${project.role}</p>
+
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Technologies</h3>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    ${project.tech.map(t => `<span style="padding: 0.5rem 1rem; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--primary-color); border-radius: 20px; font-size: 0.9rem;">${t}</span>`).join('')}
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Description</h3>
+                <p style="color: var(--text-dim); line-height: 1.8;">${project.description}</p>
+            </div>
+
+            <div>
+                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Key Achievements</h3>
+                <ul style="list-style: none; padding: 0;">
+                    ${project.achievements.map(a => `<li style="padding: 0.5rem 0; padding-left: 1.5rem; position: relative; color: var(--text-dim);"><span style="position: absolute; left: 0; color: var(--primary-color);">→</span>${a}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+
+        modal.classList.add('active');
     });
-}, observerOptions);
-
-// Observe elements
-document.querySelectorAll('.skill-category, .project-card, .timeline-item, .stat').forEach(el => {
-    observer.observe(el);
 });
 
-// Form Submission
-const contactForm = document.getElementById('contactForm');
-
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    // Get form data
-    const formData = new FormData(contactForm);
-    const data = Object.fromEntries(formData);
-
-    // Here you would typically send the data to a server
-    // For now, we'll just show an alert
-    console.log('Form submitted:', data);
-
-    // Show success message
-    showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
-
-    // Reset form
-    contactForm.reset();
+modalClose.addEventListener('click', () => {
+    modal.classList.remove('active');
 });
 
-// Notification Function
-function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        padding: 1rem 1.5rem;
-        background: ${type === 'success' ? '#10b981' : '#3b82f6'};
-        color: white;
-        border-radius: 0.5rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        z-index: 9999;
-        animation: slideIn 0.3s ease;
-        max-width: 300px;
-    `;
-    notification.textContent = message;
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.classList.remove('active');
+    }
+});
 
-    // Add to document
-    document.body.appendChild(notification);
+// =======================
+// SKILLS DESK INTERACTIONS
+// =======================
 
-    // Remove after 3 seconds
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
-    }, 3000);
+const skillsData = {
+    programming: {
+        title: 'Programming Languages',
+        skills: ['Python', 'SQL', 'Java', 'JavaScript', 'Bash/Shell']
+    },
+    cloud: {
+        title: 'Cloud & Infrastructure',
+        skills: ['AWS', 'Tencent Cloud', 'Cloud Architecture', 'Scalable Systems', 'Distributed Computing']
+    },
+    'data-eng': {
+        title: 'Data Engineering',
+        skills: ['Apache Spark', 'Apache Kafka', 'Apache Flink', 'ETL Pipelines', 'Data Processing', 'Web Scraping', 'Stream Processing']
+    },
+    ml: {
+        title: 'Machine Learning & AI',
+        skills: ['TensorFlow', 'PyTorch', 'Large Language Models', 'NLP', 'Model Fine-tuning', 'Deep Learning', 'Computer Vision']
+    },
+    tools: {
+        title: 'Tools & Visualization',
+        skills: ['Tableau', 'Microsoft BI', 'Qlikview', 'Git', 'Docker', 'Kubernetes', 'Data Validation']
+    },
+    databases: {
+        title: 'Databases',
+        skills: ['PostgreSQL', 'MySQL', 'Trino', 'TiDB', 'Database Design', 'Query Optimization', 'NoSQL']
+    }
+};
+
+const deskItems = document.querySelectorAll('.desk-item');
+const panel = document.getElementById('skillPanel');
+const panelContent = panel.querySelector('.panel-content');
+const panelClose = panel.querySelector('.panel-close');
+
+deskItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const skillKey = item.dataset.skill;
+        const skillSet = skillsData[skillKey];
+
+        panelContent.innerHTML = `
+            <h2 style="font-size: 2.5rem; margin-bottom: 2rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">${skillSet.title}</h2>
+
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; max-width: 700px; margin: 0 auto;">
+                ${skillSet.skills.map(skill => `
+                    <div style="padding: 1.5rem; background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(184, 79, 255, 0.1)); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 15px; text-align: center; font-weight: 600; transition: all 0.3s ease;"
+                         onmouseover="this.style.borderColor='var(--primary-color)'; this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0, 212, 255, 0.4)';"
+                         onmouseout="this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        ${skill}
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        panel.classList.add('active');
+    });
+});
+
+panelClose.addEventListener('click', () => {
+    panel.classList.remove('active');
+});
+
+panel.addEventListener('click', (e) => {
+    if (e.target === panel) {
+        panel.classList.remove('active');
+    }
+});
+
+// =======================
+// JOURNEY TIMELINE SCROLL
+// =======================
+
+const journeyPath = document.querySelector('.journey-path');
+
+// Auto-scroll hint
+if (journeyPath) {
+    let scrollHintShown = false;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !scrollHintShown) {
+                scrollHintShown = true;
+                // Slight auto-scroll to hint it's scrollable
+                setTimeout(() => {
+                    journeyPath.scrollBy({ left: 100, behavior: 'smooth' });
+                    setTimeout(() => {
+                        journeyPath.scrollBy({ left: -100, behavior: 'smooth' });
+                    }, 800);
+                }, 500);
+            }
+        });
+    });
+
+    observer.observe(journeyPath);
 }
 
-// Add notification animations to CSS dynamically
+// =======================
+// CONTACT ROCKET ANIMATION
+// =======================
+
+const rocket = document.querySelector('.rocket');
+
+if (rocket) {
+    rocket.addEventListener('click', () => {
+        rocket.style.animation = 'none';
+        setTimeout(() => {
+            rocket.style.animation = 'rocketLaunch 2s ease-out forwards';
+        }, 10);
+    });
+}
+
+// Add rocket launch animation
 const style = document.createElement('style');
 style.textContent = `
-    @keyframes slideIn {
-        from {
-            transform: translateX(400px);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-
-    @keyframes slideOut {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(400px);
-            opacity: 0;
-        }
+    @keyframes rocketLaunch {
+        0% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+        100% { transform: translateX(-50%) translateY(-1000px) rotate(10deg); opacity: 0; }
     }
 `;
 document.head.appendChild(style);
 
-// Active Nav Link on Scroll
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-link');
+// =======================
+// CURSOR GLOW SIZE CHANGE
+// =======================
 
-function activeNavLink() {
-    const scrollY = window.pageYOffset;
+document.addEventListener('click', () => {
+    const cursorGlow = document.querySelector('.cursor-glow');
+    cursorGlow.style.width = '600px';
+    cursorGlow.style.height = '600px';
 
-    sections.forEach(section => {
-        const sectionHeight = section.offsetHeight;
-        const sectionTop = section.offsetTop - 100;
-        const sectionId = section.getAttribute('id');
-
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                }
-            });
-        }
-    });
-}
-
-window.addEventListener('scroll', activeNavLink);
-
-// Scroll to Top Button (Optional Enhancement)
-const createScrollToTop = () => {
-    const scrollBtn = document.createElement('button');
-    scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-    scrollBtn.className = 'scroll-to-top';
-    scrollBtn.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        color: white;
-        border: none;
-        cursor: pointer;
-        opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        z-index: 999;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        font-size: 1.2rem;
-    `;
-
-    document.body.appendChild(scrollBtn);
-
-    window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-            scrollBtn.style.opacity = '1';
-        } else {
-            scrollBtn.style.opacity = '0';
-        }
-    });
-
-    scrollBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-
-    scrollBtn.addEventListener('mouseenter', () => {
-        scrollBtn.style.transform = 'translateY(-5px)';
-    });
-
-    scrollBtn.addEventListener('mouseleave', () => {
-        scrollBtn.style.transform = 'translateY(0)';
-    });
-};
-
-createScrollToTop();
-
-// Parallax Effect for Hero Section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const heroImage = document.querySelector('.hero-image');
-
-    if (heroImage) {
-        heroImage.style.transform = `translateY(${scrolled * 0.3}px)`;
-    }
+    setTimeout(() => {
+        cursorGlow.style.width = '400px';
+        cursorGlow.style.height = '400px';
+    }, 300);
 });
 
-// Counter Animation for Stats
-const animateCounters = () => {
-    const counters = document.querySelectorAll('.stat h4');
-    const speed = 200;
+// =======================
+// CONSOLE EASTER EGG
+// =======================
 
-    counters.forEach(counter => {
-        const updateCount = () => {
-            const target = parseInt(counter.getAttribute('data-target') || counter.innerText);
-            const count = parseInt(counter.innerText.replace(/\D/g, ''));
-            const increment = target / speed;
-
-            if (count < target) {
-                counter.innerText = Math.ceil(count + increment) + '+';
-                setTimeout(updateCount, 1);
-            } else {
-                counter.innerText = target + '+';
-            }
-        };
-
-        // Store original value
-        if (!counter.getAttribute('data-target')) {
-            const originalValue = parseInt(counter.innerText.replace(/\D/g, ''));
-            counter.setAttribute('data-target', originalValue);
-        }
-
-        // Observe when stat comes into view
-        const statObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    counter.innerText = '0+';
-                    updateCount();
-                    statObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        statObserver.observe(counter.closest('.stat'));
-    });
-};
-
-animateCounters();
-
-// Add loading animation
-window.addEventListener('load', () => {
-    document.body.classList.add('loaded');
-});
-
-// Cursor trail effect (optional, modern touch)
-let cursorTrail = [];
-const maxTrailLength = 20;
-
-document.addEventListener('mousemove', (e) => {
-    if (window.innerWidth > 768) { // Only on desktop
-        cursorTrail.push({ x: e.clientX, y: e.clientY, time: Date.now() });
-
-        if (cursorTrail.length > maxTrailLength) {
-            cursorTrail.shift();
-        }
-    }
-});
-
-// Flowing Data Particles Between Sections (Pipeline Effect)
-if (window.innerWidth > 640) {
-    const particleCanvas = document.createElement('canvas');
-    particleCanvas.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;';
-    document.body.appendChild(particleCanvas);
-
-    const ctx = particleCanvas.getContext('2d');
-    particleCanvas.width = window.innerWidth;
-    particleCanvas.height = window.innerHeight;
-
-    const particles = [];
-    const particleCount = 30;
-
-    class DataParticle {
-        constructor() {
-            this.reset();
-        }
-
-        reset() {
-            this.x = Math.random() * particleCanvas.width;
-            this.y = -10;
-            this.size = Math.random() * 3 + 1;
-            this.speedY = Math.random() * 1.5 + 0.5;
-            this.speedX = (Math.random() - 0.5) * 0.5;
-            this.opacity = Math.random() * 0.5 + 0.3;
-            this.color = ['#00d4ff', '#b84fff', '#00ff41'][Math.floor(Math.random() * 3)];
-        }
-
-        update() {
-            this.y += this.speedY;
-            this.x += this.speedX;
-
-            // Reset particle when it goes off screen
-            if (this.y > particleCanvas.height) {
-                this.reset();
-            }
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = this.color;
-            ctx.globalAlpha = this.opacity;
-            ctx.fill();
-
-            // Draw trailing line
-            ctx.strokeStyle = this.color;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(this.x, this.y);
-            ctx.lineTo(this.x - this.speedX * 5, this.y - this.speedY * 5);
-            ctx.stroke();
-        }
-    }
-
-    // Create particles
-    for (let i = 0; i < particleCount; i++) {
-        particles.push(new DataParticle());
-    }
-
-    function animateParticles() {
-        ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
-        ctx.globalAlpha = 1;
-
-        particles.forEach(particle => {
-            particle.update();
-            particle.draw();
-        });
-
-        requestAnimationFrame(animateParticles);
-    }
-
-    animateParticles();
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        particleCanvas.width = window.innerWidth;
-        particleCanvas.height = window.innerHeight;
-    });
-}
-
-console.log('%c [PIPELINE_STATUS]: RUNNING ', 'background: #0a0e1a; color: #00ff41; padding: 10px; border: 2px solid #00ff41; font-family: monospace; font-weight: bold;');
-console.log('%c >> DATA_FLOW: ACTIVE ', 'color: #00d4ff; font-size: 14px; font-family: monospace;');
+console.log('%c 🚀 WELCOME TO MY INTERACTIVE WORLD ', 'background: linear-gradient(135deg, #00d4ff, #b84fff); color: white; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 5px;');
+console.log('%c Navigate with the compass below → ', 'color: #00d4ff; font-size: 14px; font-weight: bold;');
+console.log('%c Built with: Vanilla JS, Canvas API, CSS Animations ', 'color: #94a3b8; font-size: 12px;');
