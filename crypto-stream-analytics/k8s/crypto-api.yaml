@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crypto-api
+  namespace: crypto-analytics
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: crypto-api
+  template:
+    metadata:
+      labels:
+        app: crypto-api
+    spec:
+      containers:
+        - name: crypto-api
+          image: crypto-stream-analytics:latest
+          imagePullPolicy: IfNotPresent
+          command: ["python", "-m", "src.api.server"]
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: crypto-config
+            - secretRef:
+                name: crypto-secrets
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          volumeMounts:
+            - name: data-volume
+              mountPath: /data
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: crypto-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crypto-api
+  namespace: crypto-analytics
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: 8000
+  selector:
+    app: crypto-api
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: crypto-data-pvc
+  namespace: crypto-analytics
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

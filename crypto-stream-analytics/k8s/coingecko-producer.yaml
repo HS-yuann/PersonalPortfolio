@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coingecko-producer
+  namespace: crypto-analytics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coingecko-producer
+  template:
+    metadata:
+      labels:
+        app: coingecko-producer
+    spec:
+      containers:
+        - name: coingecko-producer
+          image: crypto-stream-analytics:latest
+          imagePullPolicy: IfNotPresent
+          command: ["python", "-m", "src.producers.coingecko_producer"]
+          envFrom:
+            - configMapRef:
+                name: crypto-config
+            - secretRef:
+                name: crypto-secrets
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+      restartPolicy: Always

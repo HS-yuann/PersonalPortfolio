@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-processor
+  namespace: crypto-analytics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-processor
+  template:
+    metadata:
+      labels:
+        app: kafka-processor
+    spec:
+      containers:
+        - name: kafka-processor
+          image: crypto-stream-analytics:latest
+          imagePullPolicy: IfNotPresent
+          command: ["python", "-m", "src.processors.optimized_kafka_processor"]
+          envFrom:
+            - configMapRef:
+                name: crypto-config
+            - secretRef:
+                name: crypto-secrets
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: data-volume
+              mountPath: /data
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: crypto-data-pvc
+      restartPolicy: Always
